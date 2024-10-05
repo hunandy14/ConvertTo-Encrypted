@@ -126,4 +126,4 @@ function ConvertFrom-OaepEncrypted {
         }
         
     }
-} # Get-Content -Path "config.bin" -Encoding Byte | ConvertFrom-OaepEncrypted -Thumbprint d6b454009909890d0fd22751a8139cfd6b2f16ab -EncodingToUTF8
+} # Get-Content -Path config.bin -Encoding Byte | ConvertFrom-OaepEncrypted -Thumbprint d6b454009909890d0fd22751a8139cfd6b2f16ab -EncodingToUTF8
