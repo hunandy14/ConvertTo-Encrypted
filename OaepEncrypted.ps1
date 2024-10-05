@@ -29,8 +29,12 @@ function ConvertTo-OaepEncrypted {
             Write-Error "Certificate with thumbprint '$Thumbprint' not found at '$CertificatePath' location." -EA Stop
         }
         
-        # 建立資料夾
+        # 預處理輸入的路上境
         if ($OutputFilePath) {
+            # 同步 .Net 環境工作目錄
+            [IO.Directory]::SetCurrentDirectory(((Get-Location -PSProvider FileSystem).ProviderPath))
+            # 建立資料夾
+            $OutputFilePath = [IO.Path]::GetFullPath($OutputFilePath)
             $dirPath = Split-Path $OutputFilePath
             if (-not (Test-Path $dirPath)) { mkdir $dirPath -EA Stop |Out-Null }
         }
@@ -68,12 +72,12 @@ function ConvertTo-OaepEncrypted {
         # 將加密的數據寫入檔案
         if ($OutputFilePath) {
             Set-Content -Path $OutputFilePath -Value $encryptedData -Encoding Byte -EA Stop
-            Write-Host "Text encrypted and saved to $OutputFilePath"
+            Write-Host "Text encrypted and saved to '$OutputFilePath'"
         } else {
             $encryptedData
         }
     }
-} # Get-Content .\config.json -Encoding Byte | ConvertTo-OaepEncrypted -OutputFilePath .\config.bin -Thumbprint d6b454009909890d0fd22751a8139cfd6b2f16ab
+} # Get-Content config.json -Encoding Byte | ConvertTo-OaepEncrypted -OutputFilePath config.bin -Thumbprint d6b454009909890d0fd22751a8139cfd6b2f16ab
 
 
 function ConvertFrom-OaepEncrypted {
